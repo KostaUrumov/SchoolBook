@@ -2,6 +2,7 @@ using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
 using Microsoft.EntityFrameworkCore;
 using SchoolBook_Core.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +11,19 @@ builder.Services.AddDbContext<SchoolBookDb>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options =>
+{
+    options.Password.RequiredLength = 4;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+})
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<SchoolBookDb>();
 builder.Services.AddControllersWithViews();
+
 
 builder.Services.AddScoped<UserService>();
 

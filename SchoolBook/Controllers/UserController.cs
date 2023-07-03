@@ -12,14 +12,10 @@ namespace SchoolBook.Controllers
             uServ = _uServ;
         }
 
+        [HttpGet]
         public IActionResult RegisterDirector()
         {
-            RegisterUserModel user = new RegisterUserModel()
-            {
-                Role = "Principal"
-            };
-
-            return View(user);
+            return View();
         }
         public IActionResult RegisterTeacher()
         {
@@ -38,10 +34,13 @@ namespace SchoolBook.Controllers
             return View(user);
         }
 
-        [HttpGet]
-        public IActionResult RegisterDirector(RegisterUserModel model)
+        [HttpPost]
+        public async Task<IActionResult> RegisterDirector(RegisterUserModel model)
         {
-            return View(model);
+            model.Role = "Principal";
+            var user = await uServ.AddUser(model);
+            await uServ.AddToRole(user, model.Role);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -56,12 +55,7 @@ namespace SchoolBook.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Reg(RegisterUserModel model)
-        {
-            await uServ.AddUser(model);
-            return View();
-        }
+        
 
     }
 }
