@@ -49,10 +49,32 @@ namespace SchoolBook_Core.Services
             if (user.PasswordHash == model.Password.GetHashCode().ToString())
             {
                 await signInManager.SignInAsync(user, isPersistent: false);
-                
             }
+        }
 
-            
+        public async Task AddTeacher(TeacherRegisterModel model)
+        {
+            User user = new User()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                NormalizedEmail =model.Email.ToUpper(),
+                UserName = model.Username,
+                PasswordHash = model.Password.GetHashCode().ToString(),
+                NormalizedUserName = model.Username.ToUpper()
+            };
+            await userManager.CreateAsync(user);
+            Teacher teacher = new Teacher()
+            {
+                Discipline = model.Discipline,
+                Id = user.Id,
+                IsDirector = false,
+                MySudents = new List<Student>()
+            };
+
+            await data.Teachers.AddAsync(teacher);
+            await data.SaveChangesAsync();
         }
 
     }

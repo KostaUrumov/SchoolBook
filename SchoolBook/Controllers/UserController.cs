@@ -39,17 +39,16 @@ namespace SchoolBook.Controllers
         [Authorize(Policy = "AdminsOnly")]
         public IActionResult RegisterTeacher()
         {
-            RegisterUserModel user = new RegisterUserModel()
-            {
-                Role = "Teacher"
-            };
-            return View(user);
+            
+            return View();
         }
 
         [HttpPost]
         [Authorize(Policy = "AdminsOnly")]
-        public IActionResult RegisterTeacher(RegisterUserModel model)
+        public async Task <IActionResult> RegisterTeacher(TeacherRegisterModel model)
         {
+            await uServ.AddTeacher(model);
+
             return View(model);
         }
 
