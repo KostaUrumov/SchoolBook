@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Core.Services;
+using System.Security.Claims;
 
 namespace SchoolBook.Controllers
 {
@@ -13,7 +14,7 @@ namespace SchoolBook.Controllers
         }
 
         [HttpGet]
-        public IActionResult RegisterDirector()
+        public IActionResult RegisterPrincipal()
         {
             return View();
         }
@@ -35,11 +36,13 @@ namespace SchoolBook.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterDirector(RegisterUserModel model)
+        public async Task<IActionResult> RegisterPrincipal(RegisterUserModel model)
         {
+           
             model.Role = "Principal";
-            var user = await uServ.AddUser(model);
-            await uServ.AddToRole(user, model.Role);
+            await uServ.AddUser(model);
+            
+            
             return RedirectToAction("Index", "Home");
         }
 

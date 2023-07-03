@@ -52,21 +52,21 @@ namespace SchoolBook_Structure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "d987d084-7a13-4601-b9ee-b670b90c02d2",
+                            ConcurrencyStamp = "6ac63150-1536-4abd-988b-330c8e7e94ce",
                             Name = "Principal",
                             NormalizedName = "PRINCIPAL"
                         },
                         new
                         {
                             Id = "2c93174e-3b0e-446f-86af-883d56fr7210",
-                            ConcurrencyStamp = "40393011-210b-4f12-81d5-dec9e4698b6d",
+                            ConcurrencyStamp = "99595fe4-3272-4e89-957b-b495a69ade15",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
                             Id = "3j99004e-3b0e-446f-86af-073p96de6410",
-                            ConcurrencyStamp = "bc02eee7-d509-4aa8-9c95-11b3f40b9d8d",
+                            ConcurrencyStamp = "4b9ec1ab-2a46-483a-8bde-646738d3a751",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -182,6 +182,16 @@ namespace SchoolBook_Structure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Parent", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Parents");
+                });
+
             modelBuilder.Entity("SchoolBook_Structure.Entities.ParentsStudents", b =>
                 {
                     b.Property<string>("ParentId")
@@ -216,9 +226,36 @@ namespace SchoolBook_Structure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ParentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("studentId");
 
-                    b.ToTable("Student");
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Discipline")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDirector")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("SchoolBook_Structure.Entities.TeacherStudent", b =>
@@ -233,7 +270,7 @@ namespace SchoolBook_Structure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("TeacherStudent");
+                    b.ToTable("TeacherStudents");
                 });
 
             modelBuilder.Entity("SchoolBook_Structure.Entities.User", b =>
@@ -360,6 +397,17 @@ namespace SchoolBook_Structure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Parent", b =>
+                {
+                    b.HasOne("SchoolBook_Structure.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SchoolBook_Structure.Entities.ParentsStudents", b =>
                 {
                     b.HasOne("SchoolBook_Structure.Entities.User", "Parent")
@@ -379,6 +427,28 @@ namespace SchoolBook_Structure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Student", b =>
+                {
+                    b.HasOne("SchoolBook_Structure.Entities.Parent", null)
+                        .WithMany("MyKids")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("SchoolBook_Structure.Entities.Teacher", null)
+                        .WithMany("MySudents")
+                        .HasForeignKey("TeacherId");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
+                {
+                    b.HasOne("SchoolBook_Structure.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SchoolBook_Structure.Entities.TeacherStudent", b =>
                 {
                     b.HasOne("SchoolBook_Structure.Entities.Student", "Student")
@@ -396,6 +466,16 @@ namespace SchoolBook_Structure.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Parent", b =>
+                {
+                    b.Navigation("MyKids");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
+                {
+                    b.Navigation("MySudents");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,9 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolBook_Structure.Entities
 {
-    public class Teacher : User
+    public class Teacher
     {
+        [Required]
+        public string Id { get; set; } = null!;
+
+        [ForeignKey(nameof(Id))]
+        public User User { get; set; } = null!;
+
         [Required]
         public string Discipline { get; set; } = null!;
 

@@ -29,5 +29,12 @@ namespace SchoolBook_Structure.Data
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Teacher> Teachers { get; set; } = null!;
+        public DbSet<Parent> Parents { get; set; } = null!;
+        public DbSet<Student> Students { get; set; } = null!;
+        public DbSet<ParentsStudents> ParentsStudents { get; set; } = null!;
+        public DbSet<TeacherStudent> TeacherStudents { get; set; } = null!;
+
     }
 }

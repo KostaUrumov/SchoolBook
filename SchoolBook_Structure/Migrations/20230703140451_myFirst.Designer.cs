@@ -12,8 +12,8 @@ using SchoolBook_Structure.Data;
 namespace SchoolBook_Structure.Migrations
 {
     [DbContext(typeof(SchoolBookDb))]
-    [Migration("20230703122851_must")]
-    partial class must
+    [Migration("20230703140451_myFirst")]
+    partial class myFirst
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,21 +54,21 @@ namespace SchoolBook_Structure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "d987d084-7a13-4601-b9ee-b670b90c02d2",
+                            ConcurrencyStamp = "867f8543-ab9a-44bc-9cea-db6edb28d0db",
                             Name = "Principal",
                             NormalizedName = "PRINCIPAL"
                         },
                         new
                         {
                             Id = "2c93174e-3b0e-446f-86af-883d56fr7210",
-                            ConcurrencyStamp = "40393011-210b-4f12-81d5-dec9e4698b6d",
+                            ConcurrencyStamp = "fe698fee-4553-431c-bf0b-f3072872bd81",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
                             Id = "3j99004e-3b0e-446f-86af-073p96de6410",
-                            ConcurrencyStamp = "bc02eee7-d509-4aa8-9c95-11b3f40b9d8d",
+                            ConcurrencyStamp = "3516c992-e955-4ee3-a65e-7a3daa9ff851",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -218,9 +218,14 @@ namespace SchoolBook_Structure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("studentId");
 
-                    b.ToTable("Student");
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("SchoolBook_Structure.Entities.TeacherStudent", b =>
@@ -235,7 +240,7 @@ namespace SchoolBook_Structure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("TeacherStudent");
+                    b.ToTable("TeacherStudents");
                 });
 
             modelBuilder.Entity("SchoolBook_Structure.Entities.User", b =>
@@ -248,6 +253,10 @@ namespace SchoolBook_Structure.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -309,6 +318,29 @@ namespace SchoolBook_Structure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Parent", b =>
+                {
+                    b.HasBaseType("SchoolBook_Structure.Entities.User");
+
+                    b.HasDiscriminator().HasValue("Parent");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
+                {
+                    b.HasBaseType("SchoolBook_Structure.Entities.User");
+
+                    b.Property<string>("Discipline")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDirector")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("Teacher");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -381,6 +413,13 @@ namespace SchoolBook_Structure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Student", b =>
+                {
+                    b.HasOne("SchoolBook_Structure.Entities.Teacher", null)
+                        .WithMany("MySudents")
+                        .HasForeignKey("TeacherId");
+                });
+
             modelBuilder.Entity("SchoolBook_Structure.Entities.TeacherStudent", b =>
                 {
                     b.HasOne("SchoolBook_Structure.Entities.Student", "Student")
@@ -398,6 +437,22 @@ namespace SchoolBook_Structure.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
+                {
+                    b.HasOne("SchoolBook_Structure.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
+                {
+                    b.Navigation("MySudents");
                 });
 #pragma warning restore 612, 618
         }

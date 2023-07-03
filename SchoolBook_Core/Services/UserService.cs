@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SchoolBook_Core.Contracts;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
@@ -24,25 +23,28 @@ namespace SchoolBook_Core.Services
             signInManager = _signInManager;
             roleManager = _roleManager;
         }
-        public async Task<User> AddUser(RegisterUserModel model)
+        public async Task AddUser(RegisterUserModel model)
         {
             User one = new User();
             if (model.Role == "Principal")
             {
-                one.FirstName = model.Username;
+                one.FirstName = model.FirstName;
                 one.LastName = model.LastName;
-                one.UserName = model.Username;
                 one.Email = model.Email;
-                
+                one.PasswordHash = model.Password.GetHashCode().ToString();
+                one.UserName = model.Username;
+                one.NormalizedEmail = model.Email.ToUpper();
+
                 
                 await userManager.CreateAsync(one);
-                await data.Users.AddAsync(one); 
+                await data.Users.AddAsync(one);
                 await signInManager.SignInAsync(one, isPersistent: false);
 
             }
 
             if (model.Role == "Teacher")
             {
+                
                 one.FirstName = model.Username;
                 one.LastName = model.LastName;
                 one.UserName = model.Username;
@@ -50,16 +52,15 @@ namespace SchoolBook_Core.Services
 
                 await userManager.CreateAsync(one);
                 await userManager.AddToRoleAsync(one, "Teacher");
-
                 await data.Users.AddAsync(one);
                 await data.SaveChangesAsync();
-
                 await signInManager.SignInAsync(one, isPersistent: false);
                
             }
 
             if (model.Role == "Parent")
             {
+                
                 one.FirstName = model.Username;
                 one.LastName = model.LastName;
                 one.UserName = model.Username;
@@ -70,22 +71,20 @@ namespace SchoolBook_Core.Services
 
                 await data.Users.AddAsync(one);
                 await data.SaveChangesAsync();
-
                 await signInManager.SignInAsync(one, isPersistent: false);
                 
             }
-
-            return one;
         }
 
-        public async Task AddToRole(User user, string role)
+        public async Task AddToRole(string userId, string role)
         {
+            User user = data.Users.First(x => x.Id == userId);
+
             if (await roleManager.RoleExistsAsync(role))
             {
                 await userManager.AddToRoleAsync(user, role);
             }
         }
-
 
     }
 }

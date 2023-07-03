@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SchoolBook_Structure.Migrations
 {
-    public partial class migrationOne : Migration
+    public partial class myFirst : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,6 +30,9 @@ namespace SchoolBook_Structure.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discipline = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDirector = table.Column<bool>(type: "bit", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,21 +51,6 @@ namespace SchoolBook_Structure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Student",
-                columns: table => new
-                {
-                    studentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Student", x => x.studentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,6 +160,27 @@ namespace SchoolBook_Structure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    studentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TeacherId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.studentId);
+                    table.ForeignKey(
+                        name: "FK_Students_AspNetUsers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ParentsStudents",
                 columns: table => new
                 {
@@ -186,17 +195,17 @@ namespace SchoolBook_Structure.Migrations
                         column: x => x.ParentId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ParentsStudents_Student_StudentId",
+                        name: "FK_ParentsStudents_Students_StudentId",
                         column: x => x.StudentId,
-                        principalTable: "Student",
+                        principalTable: "Students",
                         principalColumn: "studentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeacherStudent",
+                name: "TeacherStudents",
                 columns: table => new
                 {
                     TeacherId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -204,35 +213,35 @@ namespace SchoolBook_Structure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeacherStudent", x => new { x.TeacherId, x.StudentId });
+                    table.PrimaryKey("PK_TeacherStudents", x => new { x.TeacherId, x.StudentId });
                     table.ForeignKey(
-                        name: "FK_TeacherStudent_AspNetUsers_TeacherId",
+                        name: "FK_TeacherStudents_AspNetUsers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_TeacherStudent_Student_StudentId",
+                        name: "FK_TeacherStudents_Students_StudentId",
                         column: x => x.StudentId,
-                        principalTable: "Student",
+                        principalTable: "Students",
                         principalColumn: "studentId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7210", "48cfae0d-d211-448b-b3ff-b84a48553ef4", "Director", "ADMINISTRATOR" });
+                values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7210", "867f8543-ab9a-44bc-9cea-db6edb28d0db", "Principal", "PRINCIPAL" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2c93174e-3b0e-446f-86af-883d56fr7210", "2e03a8f8-8ad0-4d1a-974c-411649e2a2ac", "Teacher", "USER" });
+                values: new object[] { "2c93174e-3b0e-446f-86af-883d56fr7210", "fe698fee-4553-431c-bf0b-f3072872bd81", "Teacher", "TEACHER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "3j99004e-3b0e-446f-86af-073p96de6410", "e028f578-f508-4488-b69d-63f9dc43304e", "Parent", "ADMIN" });
+                values: new object[] { "3j99004e-3b0e-446f-86af-073p96de6410", "3516c992-e955-4ee3-a65e-7a3daa9ff851", "Parent", "PARENT" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -279,8 +288,13 @@ namespace SchoolBook_Structure.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeacherStudent_StudentId",
-                table: "TeacherStudent",
+                name: "IX_Students_TeacherId",
+                table: "Students",
+                column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TeacherStudents_StudentId",
+                table: "TeacherStudents",
                 column: "StudentId");
         }
 
@@ -305,16 +319,16 @@ namespace SchoolBook_Structure.Migrations
                 name: "ParentsStudents");
 
             migrationBuilder.DropTable(
-                name: "TeacherStudent");
+                name: "TeacherStudents");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Student");
+                name: "AspNetUsers");
         }
     }
 }
