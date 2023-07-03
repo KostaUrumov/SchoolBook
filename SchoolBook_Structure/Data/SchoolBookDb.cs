@@ -19,6 +19,7 @@ namespace SchoolBook_Structure.Data
                 .HasData(
                 new IdentityRole { Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = "Principal", NormalizedName = "PRINCIPAL".ToUpper() },
                 new IdentityRole { Id = "2c93174e-3b0e-446f-86af-883d56fr7210", Name = "Teacher", NormalizedName = "TEACHER".ToUpper() },
+                new IdentityRole { Id = "0ft3109e-3t4e-446f-46he-085116fr7450", Name = "Admin", NormalizedName = "ADMIN".ToUpper() },
                 new IdentityRole { Id = "3j99004e-3b0e-446f-86af-073p96de6410", Name = "Parent", NormalizedName = "PARENT".ToUpper() });
 
             builder.Entity<ParentsStudents>()

@@ -27,6 +27,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<UserService>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminsOnly", policy => policy.RequireRole("Admin"));
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

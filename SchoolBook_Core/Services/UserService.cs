@@ -3,9 +3,10 @@ using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
 
+
 namespace SchoolBook_Core.Services
 {
-    public class UserService 
+    public class UserService
     {
         private readonly SchoolBookDb data;
         private readonly UserManager<User> userManager;
@@ -23,67 +24,35 @@ namespace SchoolBook_Core.Services
             signInManager = _signInManager;
             roleManager = _roleManager;
         }
-        public async Task AddUser(RegisterUserModel model)
+        public async Task AddAdmin(RegisterUserModel model)
         {
             User one = new User();
-            if (model.Role == "Principal")
+            one.FirstName = model.FirstName;
+            one.LastName = model.LastName;
+            one.Email = model.Email;
+            one.PasswordHash = model.Password.GetHashCode().ToString();
+            one.UserName = model.Username;
+            one.NormalizedEmail = model.Email.ToUpper();
+
+            await userManager.CreateAsync(one);
+            await data.Users.AddAsync(one);
+            await signInManager.SignInAsync(one, isPersistent: false);
+            if (one.UserName == "kostadin" && await roleManager.RoleExistsAsync("Admin"))
             {
-                one.FirstName = model.FirstName;
-                one.LastName = model.LastName;
-                one.Email = model.Email;
-                one.PasswordHash = model.Password.GetHashCode().ToString();
-                one.UserName = model.Username;
-                one.NormalizedEmail = model.Email.ToUpper();
-
-                
-                await userManager.CreateAsync(one);
-                await data.Users.AddAsync(one);
-                await signInManager.SignInAsync(one, isPersistent: false);
-
-            }
-
-            if (model.Role == "Teacher")
-            {
-                
-                one.FirstName = model.Username;
-                one.LastName = model.LastName;
-                one.UserName = model.Username;
-                one.Email = model.Email;
-
-                await userManager.CreateAsync(one);
-                await userManager.AddToRoleAsync(one, "Teacher");
-                await data.Users.AddAsync(one);
-                await data.SaveChangesAsync();
-                await signInManager.SignInAsync(one, isPersistent: false);
-               
-            }
-
-            if (model.Role == "Parent")
-            {
-                
-                one.FirstName = model.Username;
-                one.LastName = model.LastName;
-                one.UserName = model.Username;
-                one.Email = model.Email;
-
-                await userManager.CreateAsync(one);
-                await userManager.AddToRoleAsync(one, "Parent");
-
-                await data.Users.AddAsync(one);
-                await data.SaveChangesAsync();
-                await signInManager.SignInAsync(one, isPersistent: false);
-                
+                await userManager.AddToRoleAsync(one, "Admin");
             }
         }
 
-        public async Task AddToRole(string userId, string role)
+        public async Task LogIn(LogInViewModel model)
         {
-            User user = data.Users.First(x => x.Id == userId);
-
-            if (await roleManager.RoleExistsAsync(role))
+            var user = data.Users.FirstOrDefault(x => x.UserName == model.Username);
+            if (user.PasswordHash == model.Password.GetHashCode().ToString())
             {
-                await userManager.AddToRoleAsync(user, role);
+                await signInManager.SignInAsync(user, isPersistent: false);
+                
             }
+
+            
         }
 
     }

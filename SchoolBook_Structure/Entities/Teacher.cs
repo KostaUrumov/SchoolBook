@@ -11,8 +11,8 @@ namespace SchoolBook_Structure.Entities
         [ForeignKey(nameof(Id))]
         public User User { get; set; } = null!;
 
-        [Required]
-        public string Discipline { get; set; } = null!;
+        
+        public string? Discipline { get; set; }
 
         public bool IsDirector { get; set; }
 

@@ -1,23 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Core.Services;
-using System.Security.Claims;
+using SchoolBook_Structure.Data;
 
 namespace SchoolBook.Controllers
 {
     public class UserController : Controller
     {
         private readonly UserService uServ;
-        public UserController(UserService _uServ)
+        private readonly SchoolBookDb data;
+        public UserController(UserService _uServ, SchoolBookDb _data)
         {
             uServ = _uServ;
+            data = _data;
         }
 
         [HttpGet]
-        public IActionResult RegisterPrincipal()
+        public IActionResult RegisterAdmin()
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAdmin(RegisterUserModel model)
+        {
+            bool adminRegistered = data.UserRoles.Any(r => r.RoleId == "0ft3109e-3t4e-446f-46he-085116fr7450");
+            if (adminRegistered == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            await uServ.AddAdmin(model);
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        [Authorize(Policy = "AdminsOnly")]
         public IActionResult RegisterTeacher()
         {
             RegisterUserModel user = new RegisterUserModel()
@@ -26,6 +45,17 @@ namespace SchoolBook.Controllers
             };
             return View(user);
         }
+
+        [HttpPost]
+        [Authorize(Policy = "AdminsOnly")]
+        public IActionResult RegisterTeacher(RegisterUserModel model)
+        {
+            return View(model);
+        }
+
+
+        [HttpGet]
+        [Authorize(Policy = "AdminsOnly")]
         public IActionResult RegisterParent()
         {
             RegisterUserModel user = new RegisterUserModel()
@@ -34,28 +64,26 @@ namespace SchoolBook.Controllers
             };
             return View(user);
         }
+        
 
         [HttpPost]
-        public async Task<IActionResult> RegisterPrincipal(RegisterUserModel model)
-        {
-           
-            model.Role = "Principal";
-            await uServ.AddUser(model);
-            
-            
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult RegisterTeacher(RegisterUserModel model)
-        {
-            return View(model);
-        }
-
-        [HttpGet]
+        [Authorize(Policy = "AdminsOnly")]
         public IActionResult RegisterParent(RegisterUserModel model)
         {
             return View(model);
+        }
+
+        public IActionResult Login()
+        {
+           
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LogInViewModel model)
+        {
+            await uServ.LogIn(model);
+            return RedirectToAction("Index", "Home");
         }
 
         
