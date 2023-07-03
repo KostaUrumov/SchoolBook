@@ -77,5 +77,28 @@ namespace SchoolBook_Core.Services
             await data.SaveChangesAsync();
         }
 
+        public async Task AddParent(RegisterParentModel model)
+        {
+            User user = new User()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                NormalizedEmail = model.Email.ToUpper(),
+                UserName = model.Username,
+                PasswordHash = model.Password.GetHashCode().ToString(),
+                NormalizedUserName = model.Username.ToUpper()
+            };
+            await userManager.CreateAsync(user);
+            Parent parent = new Parent()
+            {
+                Id = user.Id,
+                
+                MyKids = new List<Student>()
+            };
+            await data.Parents.AddAsync(parent);
+            await data.SaveChangesAsync();
+        }
+
     }
 }

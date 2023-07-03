@@ -57,18 +57,15 @@ namespace SchoolBook.Controllers
         [Authorize(Policy = "AdminsOnly")]
         public IActionResult RegisterParent()
         {
-            RegisterUserModel user = new RegisterUserModel()
-            {
-                Role = "Parent"
-            };
-            return View(user);
+            return View();
         }
         
 
         [HttpPost]
         [Authorize(Policy = "AdminsOnly")]
-        public IActionResult RegisterParent(RegisterUserModel model)
+        public async Task<IActionResult> RegisterParent(RegisterParentModel model)
         {
+            await uServ.AddParent(model);
             return View(model);
         }
 
