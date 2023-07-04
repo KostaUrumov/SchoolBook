@@ -1,0 +1,30 @@
+﻿@model List<TeacherViewMoodel>
+
+@{
+    ViewData["Title"] = "All Teachers";
+}
+
+<div class="text-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="text-center row">
+    @foreach (var teacher in Model)
+    {
+        <div class="card col-4" style="width: 20rem;">
+            <div class="card-body">
+                <p class="mb-0">Първо име: @teacher.FirstName</p>
+                <p class="mb-0">Фамилия: @teacher.LastName</p>
+                <p class="mb-0">Предмет: @teacher.Discipline</p>
+                @if (teacher.IsPrincipal == true)
+                {
+                    <p>Директор ли е? - Да</p>
+                }
+                else
+                {
+                    <p>Директор ли е? - Не</p>
+                }
+            </div>
+        </div>
+    }
+</div>

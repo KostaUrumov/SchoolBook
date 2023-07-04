@@ -100,5 +100,21 @@ namespace SchoolBook_Core.Services
             await data.SaveChangesAsync();
         }
 
+        public List<TeacherViewMoodel> GetAllTeachers()
+        {
+            List<TeacherViewMoodel> teachers = data
+                .Teachers
+                .Select(t => new TeacherViewMoodel
+                {
+                    FirstName = t.User.FirstName,
+                    LastName = t.User.LastName,
+                    Discipline = t.Discipline,
+                    IsPrincipal = t.IsDirector
+                })
+                .ToList();
+
+            return teachers;
+        }
+
     }
 }

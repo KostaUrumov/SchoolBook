@@ -25,6 +25,10 @@ namespace SchoolBook.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterAdmin(RegisterUserModel model)
         {
+            if (model.Username != "kostadin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
             bool adminRegistered = data.UserRoles.Any(r => r.RoleId == "0ft3109e-3t4e-446f-46he-085116fr7450");
             if (adminRegistered == true)
             {
@@ -49,7 +53,7 @@ namespace SchoolBook.Controllers
         {
             await uServ.AddTeacher(model);
 
-            return View(model);
+            return RedirectToAction(nameof(AllTeachers));
         }
 
 
@@ -82,7 +86,10 @@ namespace SchoolBook.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+        public IActionResult AllTeachers()
+        {
+           return View(uServ.GetAllTeachers());
+        }
 
     }
 }
