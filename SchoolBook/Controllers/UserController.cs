@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Core.Services;
 using SchoolBook_Structure.Data;
+using SchoolBook_Structure.Entities;
+using System.Security.Claims;
 
 namespace SchoolBook.Controllers
 {
@@ -9,10 +12,15 @@ namespace SchoolBook.Controllers
     {
         private readonly UserService uServ;
         private readonly SchoolBookDb data;
-        public UserController(UserService _uServ, SchoolBookDb _data)
+        private readonly SignInManager<User> signInManager;
+        public UserController(
+            UserService _uServ, 
+            SchoolBookDb _data, 
+            SignInManager<User> _signInManager)
         {
             uServ = _uServ;
             data = _data;
+            signInManager = _signInManager;
         }
 
         [HttpGet]
@@ -52,7 +60,12 @@ namespace SchoolBook.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+
+        public async Task<IActionResult> Logout ()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
 
     }
 }

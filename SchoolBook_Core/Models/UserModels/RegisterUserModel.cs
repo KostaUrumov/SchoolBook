@@ -8,7 +8,7 @@ namespace SchoolBook_Core.Models.UserModels
     public class RegisterUserModel
     {
         [Required]
-        [Display(Name = "Username")]
+        [Display(Name = "Потребителско име")]
         public string Username { get; set; } = null!;
         [Required]
         [EmailAddress]
@@ -17,16 +17,19 @@ namespace SchoolBook_Core.Models.UserModels
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Парола")]
         public string Password { get; set; } = null!;
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Повтори паролата")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string RepeatPassword { get; set; } = null!;
         [Required]
-        [Display(Name = "FirstName")]
+        [Display(Name = "Име")]
+        
         public string FirstName { get; set; } = null!;
         [Required]
-        [Display(Name = "LastName")]
+        [Display(Name = "Фамилия")]
         public string LastName { get; set; } = null!;
 
         public string Role { get; set; } = null!;

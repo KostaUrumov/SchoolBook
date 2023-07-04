@@ -36,6 +36,7 @@ namespace SchoolBook_Structure.Data
         public DbSet<Student> Students { get; set; } = null!;
         public DbSet<ParentsStudents> ParentsStudents { get; set; } = null!;
         public DbSet<TeacherStudent> TeacherStudents { get; set; } = null!;
+        public DbSet<Exam> Exams { get; set; } = null!;
 
     }
 }

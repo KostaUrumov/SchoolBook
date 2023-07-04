@@ -29,6 +29,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ParentService>();
 builder.Services.AddScoped<TeacherService>();
 builder.Services.AddScoped<StudentService>();
+builder.Services.AddScoped<ExamService>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -38,6 +39,11 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ParentsOnly", policy => policy.RequireRole("Parent"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("TeachersOnly", policy => policy.RequireRole("Teacher"));
 });
 
 var app = builder.Build();

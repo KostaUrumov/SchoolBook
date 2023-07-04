@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SchoolBook</title>
+    <title>@ViewData["Title"] - SchoolBook </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SchoolBook.styles.css" asp-append-version="true" />
@@ -19,19 +19,23 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="navbar-brand" asp-area="" asp-controller="Teacher" asp-action="AllTeachers">Teachers</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Teacher" asp-action="AllTeachers">Учители</a>
                     </li>
+                    <li class="nav-item">
+                    <a class="navbar-brand" asp-area="" asp-controller="Exam" asp-action="AllExams">Изпити</a>
+                    </li>
+
                     @if (this.User.Identity.IsAuthenticated)
                     {
                         
                         @if (this.User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Register">Регистрация</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Parent" asp-action="AllParents">Parents</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Parent" asp-action="AllParents">Родители</a>
                             </li>
                             
                         }
@@ -39,14 +43,20 @@
                         @if (this.User.IsInRole("Parent"))
                         {
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Student" asp-action="AddStudent">New Student</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Student" asp-action="AddStudent">Нов Студент</a>
                             </li>
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Parent" asp-action="MyKids">My Kids</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Parent" asp-action="MyKids">Моите Деца</a>
+                            </li>
+                        }
+                        @if (this.User.IsInRole("Teacher"))
+                        {
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="" asp-controller="Exam" asp-action="AddExam">Добави Изпит</a>
                             </li>
                             
-
                         }
+
 
                     }
                 </ul>

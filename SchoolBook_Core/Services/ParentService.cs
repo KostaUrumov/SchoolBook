@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SchoolBook_Core.Models.ParentModels;
 using SchoolBook_Core.Models.StudentModels;
-using SchoolBook_Core.Models.Teacher;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
@@ -33,7 +33,8 @@ namespace SchoolBook_Core.Services
                 .Select(p => new ParentViewModel
                 {
                     FirstName = p.User.FirstName,
-                    LastName = p.User.LastName
+                    LastName = p.User.LastName,
+                    Id = p.Id
                 })
                 .ToList();
             return models;

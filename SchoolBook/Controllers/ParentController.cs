@@ -42,5 +42,12 @@ namespace SchoolBook.Controllers
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             return View(parServ.Mykids(userId.ToString()));
         }
+
+        
+        public IActionResult Iamparent(string parentId)
+        {
+            return View(parServ.Mykids(parentId.ToString()));
+        }
+
     }
 }

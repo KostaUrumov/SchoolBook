@@ -1,7 +1,7 @@
-﻿@model List<ParentViewModel>
+﻿@model List<AddStudentModel>
 
 @{
-    ViewData["Title"] = "Всички Родители";
+    ViewData["Title"] = "Моите деца";
 }
 
 <div class="text-center">
@@ -15,9 +15,7 @@
             <div class="card-body">
                 <p class="mb-0">Първо име: @parent.FirstName</p>
                 <p class="mb-0">Фамилия: @parent.LastName</p>
-                <form class="input-group-sm" asp-route-parentId="@parent.Id" asp-controller="Parent" asp-action="Iamparent" method="post">
-                <input type="submit" value="Моите деца" class="fs-6 btn btn-success mb-3 p-2" />
-                </form>
+                <p class="mb-0">Дата на раждане: @parent.Birthday</p>
             </div>
         </div>
     }
