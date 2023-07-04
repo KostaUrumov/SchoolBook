@@ -1,4 +1,5 @@
 ﻿using Microsoft.Build.Framework;
+using SchoolBook_Structure.Entities;
 using System.ComponentModel.DataAnnotations;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
@@ -29,5 +30,6 @@ namespace SchoolBook_Core.Models.UserModels
         public string LastName { get; set; } = null!;
 
         public string Role { get; set; } = null!;
+        public List<Student>? MyKids { get; set; } = new List<Student>();
     }
 }

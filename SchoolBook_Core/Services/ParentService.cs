@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SchoolBook_Core.Models.StudentModels;
 using SchoolBook_Core.Models.Teacher;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Structure.Data;
@@ -9,15 +10,20 @@ namespace SchoolBook_Core.Services
     public class ParentService
     {
         private readonly SchoolBookDb data;
-        UserManager<User> userManager;
+        private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
 
-        public ParentService(SchoolBookDb _data, UserManager<User> _userManager, SignInManager<User> _signInManager)
+        public ParentService(SchoolBookDb _data, 
+            UserManager<User> _userManager, 
+            SignInManager<User> _signInManager, 
+            RoleManager<IdentityRole> _roleManager)
         {
             data = _data;
             userManager = _userManager;
             signInManager = _signInManager;
+            roleManager = _roleManager;
         }
 
         public List<ParentViewModel> GetAllParents()
@@ -52,8 +58,28 @@ namespace SchoolBook_Core.Services
 
                 MyKids = new List<Student>()
             };
+            if (await roleManager.RoleExistsAsync("Parent"))
+            {
+                await userManager.AddToRoleAsync(user, "Parent");
+            }
             await data.Parents.AddAsync(parent);
             await data.SaveChangesAsync();
+        }
+
+        public List<AddStudentModel> Mykids(string parentId)
+        {
+            List<AddStudentModel> listedPeople = data
+                .Students
+                .Where(s => s.ParentId == parentId)
+                .Select(s => new AddStudentModel
+                {
+                    Birthday = s.Birthday,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                })
+                .ToList();  
+
+            return listedPeople;
         }
     }
 }

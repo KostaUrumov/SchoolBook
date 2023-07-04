@@ -10,12 +10,18 @@ namespace SchoolBook_Core.Services
         private readonly SchoolBookDb data;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public TeacherService(SchoolBookDb _data, SignInManager<User> _signInManager, UserManager<User> _userManager)
+        public TeacherService(
+            SchoolBookDb _data, 
+            SignInManager<User> _signInManager, 
+            UserManager<User> _userManager,
+            RoleManager<IdentityRole> _roleManager)
         {
             data = _data;
             userManager = _userManager;
             signInManager = _signInManager;
+            roleManager = _roleManager;
         }
 
         public List<TeacherViewMoodel> GetAllTeachers()
@@ -54,6 +60,10 @@ namespace SchoolBook_Core.Services
                 IsDirector = false,
                 MySudents = new List<Student>()
             };
+            if (await roleManager.RoleExistsAsync("Teacher"))
+            {
+                await userManager.AddToRoleAsync(user, "Teacher");
+            }
 
             await data.Teachers.AddAsync(teacher);
             await data.SaveChangesAsync();

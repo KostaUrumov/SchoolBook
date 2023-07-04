@@ -3,7 +3,6 @@ using SchoolBook_Structure.Entities;
 using Microsoft.EntityFrameworkCore;
 using SchoolBook_Core.Services;
 using Microsoft.AspNetCore.Identity;
-using SchoolBook.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +28,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ParentService>();
 builder.Services.AddScoped<TeacherService>();
+builder.Services.AddScoped<StudentService>();
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminsOnly", policy => policy.RequireRole("Admin"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ParentsOnly", policy => policy.RequireRole("Parent"));
 });
 
 var app = builder.Build();

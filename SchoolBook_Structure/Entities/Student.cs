@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolBook_Structure.Entities
 {
@@ -14,6 +15,11 @@ namespace SchoolBook_Structure.Entities
         public string LastName { get; set; } = null!;
         [Required]
         public DateTime Birthday { get; set; }
+
+        public string ParentId { get; set; } = null!;
+
+        [ForeignKey(nameof(ParentId))]
+        public Parent Parent { get; set; } = null!;
 
        
     }
