@@ -26,6 +26,7 @@ builder.Services.AddControllersWithViews();
 
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ParentService>();
 
 builder.Services.AddAuthorization(options =>
 {

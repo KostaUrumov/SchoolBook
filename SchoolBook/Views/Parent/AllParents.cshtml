@@ -1,0 +1,21 @@
+﻿@model List<ParentViewModel>
+
+@{
+    ViewData["Title"] = "All Parents";
+}
+
+<div class="text-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="text-center row">
+    @foreach (var parent in Model)
+    {
+        <div class="card col-4" style="width: 20rem;">
+            <div class="card-body">
+                <p class="mb-0">Първо име: @parent.FirstName</p>
+                <p class="mb-0">Фамилия: @parent.LastName</p>
+            </div>
+        </div>
+    }
+</div>
