@@ -30,7 +30,7 @@ namespace SchoolBook_Core.Services
             one.FirstName = model.FirstName;
             one.LastName = model.LastName;
             one.Email = model.Email;
-            one.PasswordHash = model.Password.GetHashCode().ToString();
+            one.PasswordHash = model.Password.ToString();
             one.UserName = model.Username;
             one.NormalizedEmail = model.Email.ToUpper();
 
@@ -46,75 +46,17 @@ namespace SchoolBook_Core.Services
         public async Task LogIn(LogInViewModel model)
         {
             var user = data.Users.FirstOrDefault(x => x.UserName == model.Username);
-            if (user.PasswordHash == model.Password.GetHashCode().ToString())
+            if (user.PasswordHash == model.Password.ToString())
             {
                 await signInManager.SignInAsync(user, isPersistent: false);
             }
         }
 
-        public async Task AddTeacher(TeacherRegisterModel model)
-        {
-            User user = new User()
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                NormalizedEmail =model.Email.ToUpper(),
-                UserName = model.Username,
-                PasswordHash = model.Password.GetHashCode().ToString(),
-                NormalizedUserName = model.Username.ToUpper()
-            };
-            await userManager.CreateAsync(user);
-            Teacher teacher = new Teacher()
-            {
-                Discipline = model.Discipline,
-                Id = user.Id,
-                IsDirector = false,
-                MySudents = new List<Student>()
-            };
+       
 
-            await data.Teachers.AddAsync(teacher);
-            await data.SaveChangesAsync();
-        }
+        
 
-        public async Task AddParent(RegisterParentModel model)
-        {
-            User user = new User()
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                NormalizedEmail = model.Email.ToUpper(),
-                UserName = model.Username,
-                PasswordHash = model.Password.GetHashCode().ToString(),
-                NormalizedUserName = model.Username.ToUpper()
-            };
-            await userManager.CreateAsync(user);
-            Parent parent = new Parent()
-            {
-                Id = user.Id,
-                
-                MyKids = new List<Student>()
-            };
-            await data.Parents.AddAsync(parent);
-            await data.SaveChangesAsync();
-        }
-
-        public List<TeacherViewMoodel> GetAllTeachers()
-        {
-            List<TeacherViewMoodel> teachers = data
-                .Teachers
-                .Select(t => new TeacherViewMoodel
-                {
-                    FirstName = t.User.FirstName,
-                    LastName = t.User.LastName,
-                    Discipline = t.Discipline,
-                    IsPrincipal = t.IsDirector
-                })
-                .ToList();
-
-            return teachers;
-        }
+       
 
     }
 }

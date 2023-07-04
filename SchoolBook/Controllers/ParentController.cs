@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Core.Services;
 
 namespace SchoolBook.Controllers
@@ -15,6 +17,22 @@ namespace SchoolBook.Controllers
         public IActionResult AllParents()
         {
             return View(parServ.GetAllParents());
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "AdminsOnly")]
+        public IActionResult RegisterParent()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [Authorize(Policy = "AdminsOnly")]
+        public async Task<IActionResult> RegisterParent(RegisterParentModel model)
+        {
+            await parServ.AddParent(model);
+            return RedirectToAction("AllParent", "Parent");
         }
     }
 }

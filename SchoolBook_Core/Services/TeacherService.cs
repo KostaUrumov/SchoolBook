@@ -1,39 +1,40 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SchoolBook_Core.Models.Teacher;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
 
 namespace SchoolBook_Core.Services
 {
-    public class ParentService
+    public class TeacherService
     {
         private readonly SchoolBookDb data;
-        UserManager<User> userManager;
+        private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
 
-
-        public ParentService(SchoolBookDb _data, UserManager<User> _userManager, SignInManager<User> _signInManager)
+        public TeacherService(SchoolBookDb _data, SignInManager<User> _signInManager, UserManager<User> _userManager)
         {
             data = _data;
             userManager = _userManager;
             signInManager = _signInManager;
         }
 
-        public List<ParentViewModel> GetAllParents()
+        public List<TeacherViewMoodel> GetAllTeachers()
         {
-            List<ParentViewModel> models = data
-                .Parents
-                .Select(p => new ParentViewModel
+            List<TeacherViewMoodel> teachers = data
+                .Teachers
+                .Select(t => new TeacherViewMoodel
                 {
-                    FirstName = p.User.FirstName,
-                    LastName = p.User.LastName
+                    FirstName = t.User.FirstName,
+                    LastName = t.User.LastName,
+                    Discipline = t.Discipline,
+                    IsPrincipal = t.IsDirector
                 })
                 .ToList();
-            return models;
+
+            return teachers;
         }
 
-        public async Task AddParent(RegisterParentModel model)
+        public async Task AddTeacher(TeacherRegisterModel model)
         {
             User user = new User()
             {
@@ -46,13 +47,15 @@ namespace SchoolBook_Core.Services
                 NormalizedUserName = model.Username.ToUpper()
             };
             await userManager.CreateAsync(user);
-            Parent parent = new Parent()
+            Teacher teacher = new Teacher()
             {
+                Discipline = model.Discipline,
                 Id = user.Id,
-
-                MyKids = new List<Student>()
+                IsDirector = false,
+                MySudents = new List<Student>()
             };
-            await data.Parents.AddAsync(parent);
+
+            await data.Teachers.AddAsync(teacher);
             await data.SaveChangesAsync();
         }
     }

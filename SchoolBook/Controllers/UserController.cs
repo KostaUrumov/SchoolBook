@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Core.Services;
 using SchoolBook_Structure.Data;
@@ -39,39 +38,6 @@ namespace SchoolBook.Controllers
         }
 
 
-        [HttpGet]
-        [Authorize(Policy = "AdminsOnly")]
-        public IActionResult RegisterTeacher()
-        {
-            
-            return View();
-        }
-
-        [HttpPost]
-        [Authorize(Policy = "AdminsOnly")]
-        public async Task <IActionResult> RegisterTeacher(TeacherRegisterModel model)
-        {
-            await uServ.AddTeacher(model);
-
-            return RedirectToAction(nameof(AllTeachers));
-        }
-
-
-        [HttpGet]
-        [Authorize(Policy = "AdminsOnly")]
-        public IActionResult RegisterParent()
-        {
-            return View();
-        }
-        
-
-        [HttpPost]
-        [Authorize(Policy = "AdminsOnly")]
-        public async Task<IActionResult> RegisterParent(RegisterParentModel model)
-        {
-            await uServ.AddParent(model);
-            return View(model);
-        }
 
         public IActionResult Login()
         {
@@ -86,10 +52,7 @@ namespace SchoolBook.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult AllTeachers()
-        {
-           return View(uServ.GetAllTeachers());
-        }
+        
 
     }
 }
