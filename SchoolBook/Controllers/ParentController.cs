@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SchoolBook_Core.Models.UserModels;
+using SchoolBook_Core.Models.ParentModels;
 using SchoolBook_Core.Services;
 using SchoolBook_Structure.Entities;
 using System.Security.Claims;

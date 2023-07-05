@@ -1,4 +1,4 @@
-﻿namespace SchoolBook_Core.Models.UserModels
+﻿namespace SchoolBook_Core.Models.Teacher
 {
     public class TeacherViewMoodel
     {

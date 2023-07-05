@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SchoolBook_Core.Models.StudentModels;
-using SchoolBook_Core.Models.UserModels;
+using SchoolBook_Core.Models.Teacher;
 using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
 

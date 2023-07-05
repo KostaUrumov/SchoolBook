@@ -3,6 +3,7 @@ using SchoolBook_Structure.Entities;
 using Microsoft.EntityFrameworkCore;
 using SchoolBook_Core.Services;
 using Microsoft.AspNetCore.Identity;
+using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,12 @@ builder.Services.AddDefaultIdentity<User>(options =>
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<SchoolBookDb>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/User/Login";
+    
+});
 
 
 builder.Services.AddScoped<UserService>();

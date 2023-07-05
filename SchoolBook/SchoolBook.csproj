@@ -24,4 +24,8 @@
     <ProjectReference Include="..\SchoolBook_Structure\SchoolBook_Structure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\" />
+  </ItemGroup>
+
 </Project>
