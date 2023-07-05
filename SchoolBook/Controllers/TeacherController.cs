@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Core.Services;
-using SchoolBook_Structure.Entities;
 using System.Security.Claims;
 
 namespace SchoolBook.Controllers
