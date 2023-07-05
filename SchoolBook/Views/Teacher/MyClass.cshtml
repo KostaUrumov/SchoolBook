@@ -1,0 +1,29 @@
+﻿@model List<ShowStudentModel>
+
+@{
+    ViewData["Title"] = "Моят клас";
+}
+
+<div class="text-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="text-center row">
+    @foreach (var student in Model)
+    {
+        <div class="card col-4" style="width: 20rem;">
+            <div class="card-body">
+                <p class="mb-0">Първо име: @student.FirstName</p>
+                <p class="mb-0">Фамилия: @student.LastName</p>
+                <p class="mb-0">Дата на раждане: @student.Birthday</p>
+                @if (User.IsInRole("Teacher"))
+                {
+                    <form class="input-group-sm" asp-route-studentId="@student.Id" asp-controller="Teacher" asp-action="RemoveFromMyClass" method="post">
+                        <input type="submit" value="Премахни от моя клас" class="fs-6 btn btn-success mb-3 p-2" />
+                    </form>
+
+                }
+            </div>
+        </div>
+    }
+</div>

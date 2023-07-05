@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SchoolBook_Core.Models.StudentModels;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
@@ -33,7 +34,8 @@ namespace SchoolBook_Core.Services
                     FirstName = t.User.FirstName,
                     LastName = t.User.LastName,
                     Discipline = t.Discipline,
-                    IsPrincipal = t.IsDirector
+                    IsPrincipal = t.IsDirector,
+                    Id = t.Id,
                 })
                 .ToList();
 
@@ -68,5 +70,71 @@ namespace SchoolBook_Core.Services
             await data.Teachers.AddAsync(teacher);
             await data.SaveChangesAsync();
         }
+
+        public async Task RemovePrincipal()
+        {
+            foreach (Teacher item in data.Teachers)
+            {
+                if (item.IsDirector == true)
+                {
+                    item.IsDirector = false;
+                }
+            }
+            await data.SaveChangesAsync();
+        }
+
+        public async Task BecomePrincipal(string userId)
+        {
+            Teacher tech = data.Teachers.First(x => x.Id == userId);
+            tech.IsDirector = true;
+            await data.SaveChangesAsync();
+        }
+
+        public async Task AddToMyClass(string userId, int studentId)
+        {
+            Teacher teacher = data.Teachers.First(y => y.Id == userId);
+            Student stud = data.Students.First(s => s.studentId == studentId);
+            TeacherStudent teachStudent = new TeacherStudent()
+            {
+                TeacherId = teacher.Id,
+                StudentId = studentId,
+            };
+            await data.TeacherStudents.AddAsync(teachStudent);
+            await data.SaveChangesAsync();
+        }
+
+        public List<ShowStudentModel> MyClass(string userId)
+        {
+            Teacher teacher = data.Teachers.First(y => y.Id == userId);
+            List<ShowStudentModel> myclass = data
+                .TeacherStudents
+                .Where(t=>t.TeacherId == teacher.Id)
+                .Select(t => new ShowStudentModel()
+                {
+                    FirstName = t.Student.FirstName,
+                    LastName = t.Student.LastName,
+                    Birthday = t.Student.Birthday.Date.ToShortDateString(),
+                    Id = t.StudentId
+
+                })
+                .ToList();
+
+            return myclass;
+        }
+
+        public async Task RemoveFromClass(string userId, int studentId)
+        {
+            List<TeacherStudent> toBeRemoved = data
+                .TeacherStudents
+                .Where(t=>t.TeacherId == userId)
+                .Where(s=>s.StudentId == studentId)
+                .ToList();
+
+             data.TeacherStudents.RemoveRange(toBeRemoved);
+             await data.SaveChangesAsync();
+
+
+        }
+
     }
 }

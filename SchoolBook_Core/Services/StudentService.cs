@@ -28,7 +28,21 @@ namespace SchoolBook_Core.Services
             us.MyKids.Add(student);
             await data.AddAsync(student);
             await data.SaveChangesAsync();
-            
+        }
+
+        public List<ShowStudentModel> AllStudents()
+        {
+            List<ShowStudentModel> studs = data
+                .Students
+                .Select(s => new ShowStudentModel
+                {
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    Birthday = s.Birthday.Date.ToShortDateString(),
+                    Id = s.studentId
+                })
+                .ToList();
+            return studs;
         }
 
     }

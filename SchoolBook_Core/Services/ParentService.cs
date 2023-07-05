@@ -67,14 +67,14 @@ namespace SchoolBook_Core.Services
             await data.SaveChangesAsync();
         }
 
-        public List<AddStudentModel> Mykids(string parentId)
+        public List<ShowStudentModel> Mykids(string parentId)
         {
-            List<AddStudentModel> listedPeople = data
+            List<ShowStudentModel> listedPeople = data
                 .Students
                 .Where(s => s.ParentId == parentId)
-                .Select(s => new AddStudentModel
+                .Select(s => new ShowStudentModel
                 {
-                    Birthday = s.Birthday,
+                    Birthday = s.Birthday.Date.ToString(),
                     FirstName = s.FirstName,
                     LastName = s.LastName,
                 })

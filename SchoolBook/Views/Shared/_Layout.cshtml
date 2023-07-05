@@ -43,7 +43,7 @@
                         @if (this.User.IsInRole("Parent"))
                         {
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Student" asp-action="AddStudent">Нов Студент</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Student" asp-action="AddStudent">Нов Ученик</a>
                             </li>
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="" asp-controller="Parent" asp-action="MyKids">Моите Деца</a>
@@ -53,6 +53,12 @@
                         {
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="" asp-controller="Exam" asp-action="AddExam">Добави Изпит</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="" asp-controller="Student" asp-action="AllStudents">Ученици</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="navbar-brand" asp-area="" asp-controller="Teacher" asp-action="MyClass">Моят клас</a>
                             </li>
                             
                         }

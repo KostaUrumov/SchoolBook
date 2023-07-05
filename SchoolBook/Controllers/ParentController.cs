@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.UserModels;
 using SchoolBook_Core.Services;
+using SchoolBook_Structure.Entities;
 using System.Security.Claims;
 
 namespace SchoolBook.Controllers
@@ -46,7 +47,7 @@ namespace SchoolBook.Controllers
         
         public IActionResult Iamparent(string parentId)
         {
-            return View(parServ.Mykids(parentId.ToString()));
+           return View(parServ.Mykids(parentId.ToString()));
         }
 
     }

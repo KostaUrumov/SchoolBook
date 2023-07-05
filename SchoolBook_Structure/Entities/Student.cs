@@ -21,6 +21,7 @@ namespace SchoolBook_Structure.Entities
         [ForeignKey(nameof(ParentId))]
         public Parent Parent { get; set; } = null!;
 
-       
+        public List<Exam> Exams { get; set; } = new List<Exam>();
+
     }
 }

@@ -8,5 +8,7 @@
         public string Discipline { get; set; } = null!;
 
         public bool IsPrincipal { get; set; }
+
+        public string Id { get; set; } = null!;
     }
 }

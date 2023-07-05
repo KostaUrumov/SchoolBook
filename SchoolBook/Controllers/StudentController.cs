@@ -31,6 +31,13 @@ namespace SchoolBook.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Policy = "TeachersOnly")]
+        public IActionResult AllStudents()
+        {
+            
+            return View(sServ.AllStudents());
+        }
+
     }
 }
 
