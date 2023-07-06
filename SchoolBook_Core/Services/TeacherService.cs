@@ -3,6 +3,7 @@ using SchoolBook_Core.Models.StudentModels;
 using SchoolBook_Core.Models.Teacher;
 using SchoolBook_Structure.Data;
 using SchoolBook_Structure.Entities;
+using System.ComponentModel;
 
 namespace SchoolBook_Core.Services
 {
@@ -66,7 +67,7 @@ namespace SchoolBook_Core.Services
             {
                 await userManager.AddToRoleAsync(user, "Teacher");
             }
-
+            
             await data.Teachers.AddAsync(teacher);
             await data.SaveChangesAsync();
         }
@@ -150,8 +151,61 @@ namespace SchoolBook_Core.Services
                 return true;
             }
             return false;
+        }
+
+        public List<ShowStudentModel> FindStudents(int examId)
+        {
+            Exam exam = data.Exams.First(x => x.Id == examId);
+            List<ShowStudentModel> students = new List<ShowStudentModel>();
+            foreach (var student in data.Students)
+            {
+                if (!student.Exams.Contains(exam))
+                {
+                    ShowStudentModel studentModel = new ShowStudentModel()
+                    {
+                        FirstName = student.FirstName,
+                        LastName = student.LastName,
+                        Birthday = student.Birthday.ToShortDateString(),
+                        ExamId = exam.Id,
+                        Id = student.studentId
+                    };
+                    students.Add(studentModel);
+                }
+            }
+                
+            return students;
+        }
+
+        public bool IfStudentIsAssigned(int examId, int studentId)
+        {
+            Exam exam = data.Exams.First(x => x.Id == examId);
+            Student stud = data.Students.First(s => s.studentId == studentId);
+            StudentExam newStudentExam = new StudentExam()
+            {
+                StudentId = studentId,
+                ExamId = examId
+            };
+            if (data.StudentsExams.Contains(newStudentExam))
+            {
+                return true;
+            }
+            return false;
 
         }
+
+        public void AddToExam(int examId, int studentId)
+        {
+            StudentExam newStudentExam = new StudentExam()
+            {
+                StudentId = studentId,
+                ExamId = examId
+            };
+
+            data.StudentsExams.Add(newStudentExam);
+            data.SaveChanges();
+        }
+
+        
 
     }
 }

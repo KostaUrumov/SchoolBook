@@ -12,5 +12,7 @@ namespace SchoolBook_Core.Models.StudentModels
         public string Birthday { get; set; } = null!;
 
         public int Id { get; set; }
+        
+        public int ExamId { get; set; }
     }
 }

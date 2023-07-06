@@ -1,0 +1,23 @@
+﻿@model List<ShowStudentModel>
+
+@{
+    ViewData["Title"] = "Присъстващи";
+}
+
+<div class="text-center">
+    <h2>@ViewBag.Title</h2>
+</div>
+
+<div class="text-center row">
+    @foreach (var student in Model)
+    {
+        <div class="card col-4" style="width: 20rem;">
+            <div class="card-body">
+                <p class="mb-0">Първо име: @student.FirstName</p>
+                <p class="mb-0">Фамилия: @student.LastName</p>
+                <p class="mb-0">Дата на раждане: @student.Birthday</p>
+                
+            </div>
+        </div>
+    }
+</div>

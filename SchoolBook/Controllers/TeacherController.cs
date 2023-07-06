@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.Teacher;
 using SchoolBook_Core.Services;
+using SchoolBook_Structure.Entities;
 using System.Security.Claims;
 
 namespace SchoolBook.Controllers
@@ -9,10 +10,12 @@ namespace SchoolBook.Controllers
     public class TeacherController : Controller
     {
         private readonly TeacherService tServ;
+        private readonly ExamService eServ;
 
-        public TeacherController(TeacherService _tServ)
+        public TeacherController(TeacherService _tServ, ExamService _eServ)
         {
             tServ = _tServ;
+            eServ = _eServ;
         }
         public IActionResult Index()
         {
@@ -43,7 +46,7 @@ namespace SchoolBook.Controllers
         }
 
         [Authorize(Policy = "AdminsOnly")]
-        public async Task<IActionResult> BecomePrincipal (string teacherId)
+        public async Task<IActionResult> BecomePrincipal(string teacherId)
         {
             await tServ.RemovePrincipal();
             await tServ.BecomePrincipal(teacherId);
@@ -64,7 +67,7 @@ namespace SchoolBook.Controllers
             return RedirectToAction(nameof(MyClass));
         }
 
-        
+
         [Authorize(Policy = "TeachersOnly")]
         public IActionResult MyClass()
         {
@@ -72,7 +75,7 @@ namespace SchoolBook.Controllers
             return View(tServ.MyClass(userId));
         }
 
-        
+
         [Authorize(Policy = "TeachersOnly")]
         public async Task<IActionResult> RemoveFromMyClass(int studentId)
         {
@@ -80,5 +83,26 @@ namespace SchoolBook.Controllers
             await tServ.RemoveFromClass(userId, studentId);
             return RedirectToAction(nameof(MyClass));
         }
+
+        [Authorize(Policy = "TeachersOnly")]
+        public IActionResult LoadStudents(int examId)
+        {
+            return View(tServ.FindStudents(examId));
+        }
+
+        public IActionResult AddToExam(int examId, int studentId)
+        {
+            var mar = tServ.IfStudentIsAssigned(examId, studentId);
+            if (mar == false)
+            {
+                tServ.AddToExam(examId, studentId);
+
+                return View(eServ.CheckParticipants(examId));
+            }
+
+            return RedirectToAction("Index", "Home");
+
+        }
+
     }
 }

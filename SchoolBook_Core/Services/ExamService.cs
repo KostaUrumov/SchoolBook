@@ -57,6 +57,7 @@ namespace SchoolBook_Core.Services
             List<StudentExam> studExams = new List<StudentExam>();
             foreach (Student student in students)
             {
+                student.Exams.Add(exam[0]);
                 StudentExam sE = new StudentExam()
                 {
                     ExamId = exam[0].Id,
@@ -71,9 +72,9 @@ namespace SchoolBook_Core.Services
             
         }
 
-        public List<ShowStudentModel> CheckParticipants(int examId)
+        public  List<ShowStudentModel> CheckParticipants(int examId)
         {
-            List<ShowStudentModel> students = data
+             List<ShowStudentModel> students = data
                 .StudentsExams
                 .Where(e => e.ExamId == examId)
                 .Select(s => new ShowStudentModel()
@@ -83,7 +84,7 @@ namespace SchoolBook_Core.Services
                     Birthday = s.Student.Birthday.ToShortDateString()
                 })
                 .ToList();
-            return students;
+             return students;
         }
 
     }

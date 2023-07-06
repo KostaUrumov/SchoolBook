@@ -20,6 +20,9 @@
                     <form class="input-group-sm" asp-route-examId="@exam.Id" asp-controller="Exam" asp-action="Participants" method="post">
                         <input type="submit" value="Ученици на изпит" class="fs-6 btn btn-success mb-3 p-2" />
                     </form>
+                    <form class="input-group-sm" asp-route-examId="@exam.Id" asp-controller="Teacher" asp-action="LoadStudents" method="post">
+                        <input type="submit" value="Добави Ученици" class="fs-6 btn btn-success mb-3 p-2" />
+                    </form>
 
                 }
             </div>

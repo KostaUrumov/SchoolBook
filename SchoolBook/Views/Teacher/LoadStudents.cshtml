@@ -1,7 +1,7 @@
 ﻿@model List<ShowStudentModel>
 
 @{
-    ViewData["Title"] = "Всички ученици";
+    ViewData["Title"] = "Всички Ученици";
 }
 
 <div class="text-center">
@@ -18,13 +18,10 @@
                 <p class="mb-0">Дата на раждане: @student.Birthday</p>
                 @if (User.IsInRole("Teacher"))
                 {
-                    <form class="input-group-sm" asp-route-studentId="@student.Id" asp-controller="Teacher" asp-action="AddToMyClass" method="post">
-                        <input type="submit" value="Добави в моя клас" class="fs-6 btn btn-success mb-3 p-2" />
-                    </form>
-                    <form class="input-group-sm" asp-route-studentId="@student.Id" asp-controller="Teacher" asp-action="AddToExam" method="post">
+                    <form class="input-group-sm" asp-route-examId="@student.ExamId" asp-route-studentId="@student.Id" asp-controller="Teacher" asp-action="AddToExam" method="post">
                         <input type="submit" value="Добави към изпит" class="fs-6 btn btn-success mb-3 p-2" />
                     </form>
-                    
+
                 }
             </div>
         </div>

@@ -32,7 +32,7 @@ namespace SchoolBook.Controllers
         public async Task<IActionResult> RegisterParent(RegisterParentModel model)
         {
             await parServ.AddParent(model);
-            return RedirectToAction(nameof(AllParents));
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize(Policy = "ParentsOnly")]

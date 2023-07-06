@@ -62,6 +62,7 @@ namespace SchoolBook_Core.Services
             {
                 await userManager.AddToRoleAsync(user, "Parent");
             }
+            await signInManager.SignInAsync(user, isPersistent: false);
             await data.Parents.AddAsync(parent);
             await data.SaveChangesAsync();
         }
