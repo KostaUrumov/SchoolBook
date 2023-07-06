@@ -28,7 +28,7 @@ namespace SchoolBook.Controllers
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             await sServ.AddStudent(student, userId);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MyKids", "Parent");
         }
 
         [Authorize(Policy = "TeachersOnly")]

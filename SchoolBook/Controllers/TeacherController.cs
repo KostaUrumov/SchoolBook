@@ -55,6 +55,11 @@ namespace SchoolBook.Controllers
         public async Task<IActionResult> AddToMyClass(int studentId)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var there = tServ.CheckIfThere(userId, studentId);
+            if (there == true)
+            {
+                return RedirectToAction(nameof(MyClass));
+            }
             await tServ.AddToMyClass(userId, studentId);
             return RedirectToAction(nameof(MyClass));
         }

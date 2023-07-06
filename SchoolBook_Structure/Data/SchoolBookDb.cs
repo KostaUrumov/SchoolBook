@@ -28,6 +28,9 @@ namespace SchoolBook_Structure.Data
             builder.Entity<TeacherStudent>()
                 .HasKey(k => new { k.TeacherId, k.StudentId });
 
+            builder.Entity<StudentExam>()
+               .HasKey(k => new { k.ExamId, k.StudentId });
+
             base.OnModelCreating(builder);
         }
 
@@ -37,6 +40,7 @@ namespace SchoolBook_Structure.Data
         public DbSet<ParentsStudents> ParentsStudents { get; set; } = null!;
         public DbSet<TeacherStudent> TeacherStudents { get; set; } = null!;
         public DbSet<Exam> Exams { get; set; } = null!;
+        public DbSet<StudentExam> StudentsExams { get; set; } = null!;
 
     }
 }

@@ -15,6 +15,13 @@
             <div class="card-body">
                 <p class="mb-0">Предмет: @exam.Discimpline</p>
                 <p class="mb-0">Дата: @exam.Date</p>
+                @if (User.IsInRole("Teacher"))
+                {
+                    <form class="input-group-sm" asp-route-examId="@exam.Id" asp-controller="Exam" asp-action="Participants" method="post">
+                        <input type="submit" value="Ученици на изпит" class="fs-6 btn btn-success mb-3 p-2" />
+                    </form>
+
+                }
             </div>
         </div>
     }

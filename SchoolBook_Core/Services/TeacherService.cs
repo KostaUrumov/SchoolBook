@@ -136,5 +136,22 @@ namespace SchoolBook_Core.Services
 
         }
 
+        public bool CheckIfThere(string userId, int studentId)
+        {
+            Teacher teacher = data.Teachers.First(y => y.Id == userId);
+            Student stud = data.Students.First(s => s.studentId == studentId);
+            TeacherStudent teachStudent = new TeacherStudent()
+            {
+                TeacherId = teacher.Id,
+                StudentId = studentId,
+            };
+            if (data.TeacherStudents.Contains(teachStudent))
+            {
+                return true;
+            }
+            return false;
+
+        }
+
     }
 }

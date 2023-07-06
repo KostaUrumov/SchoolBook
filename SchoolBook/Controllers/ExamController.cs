@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.ExamModels;
 using SchoolBook_Core.Services;
+using System.Security.Claims;
 
 namespace SchoolBook.Controllers
 {
@@ -24,13 +25,22 @@ namespace SchoolBook.Controllers
         [Authorize(Policy = "TeachersOnly")]
         public async Task<IActionResult> AddExam(AddExamModel model)
         {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             await eServ.AddExam(model);
+            await eServ.AddStudentsToTheExam(userId, model);
             return RedirectToAction(nameof(AllExams));
         }
 
+        [Authorize]
         public IActionResult AllExams()
         {
             return View(eServ.AllExams());
+        }
+
+        [Authorize(Policy = "TeachersOnly")]
+        public IActionResult Participants(int examId)
+        {
+            return View(eServ.CheckParticipants(examId));
         }
 
     }

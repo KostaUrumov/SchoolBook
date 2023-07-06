@@ -4,9 +4,9 @@ namespace SchoolBook_Structure.Entities
 {
     public class StudentExam
     {
-        public int studentId { get; set; }
+        public int StudentId { get; set; }
 
-        [ForeignKey(nameof(studentId))]
+        [ForeignKey(nameof(StudentId))]
         public Student Student { get; set; } = null!;
 
         public int ExamId { get; set; }

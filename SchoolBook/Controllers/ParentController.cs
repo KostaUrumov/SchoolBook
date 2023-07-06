@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.ParentModels;
 using SchoolBook_Core.Services;
-using SchoolBook_Structure.Entities;
 using System.Security.Claims;
 
 namespace SchoolBook.Controllers
@@ -16,13 +15,13 @@ namespace SchoolBook.Controllers
             parServ = _parServ;
         }
 
+        [Authorize(Policy = "TeachersOnly")]
         public IActionResult AllParents()
         {
             return View(parServ.GetAllParents());
         }
 
         [HttpGet]
-        [Authorize(Policy = "AdminsOnly")]
         public IActionResult RegisterParent()
         {
             return View();
@@ -30,7 +29,6 @@ namespace SchoolBook.Controllers
 
 
         [HttpPost]
-        [Authorize(Policy = "AdminsOnly")]
         public async Task<IActionResult> RegisterParent(RegisterParentModel model)
         {
             await parServ.AddParent(model);

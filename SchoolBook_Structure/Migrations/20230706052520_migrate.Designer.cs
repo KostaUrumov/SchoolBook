@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolBook_Structure.Data;
 
@@ -11,9 +12,10 @@ using SchoolBook_Structure.Data;
 namespace SchoolBook_Structure.Migrations
 {
     [DbContext(typeof(SchoolBookDb))]
-    partial class SchoolBookDbModelSnapshot : ModelSnapshot
+    [Migration("20230706052520_migrate")]
+    partial class migrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,28 +69,28 @@ namespace SchoolBook_Structure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "fbab43f0-4ea6-460e-9fce-abcded480791",
+                            ConcurrencyStamp = "22f5ada7-35e7-4460-b4c6-0af854f9a9c5",
                             Name = "Principal",
                             NormalizedName = "PRINCIPAL"
                         },
                         new
                         {
                             Id = "2c93174e-3b0e-446f-86af-883d56fr7210",
-                            ConcurrencyStamp = "6e7cdeff-4a07-40e2-9f77-a09eb443f396",
+                            ConcurrencyStamp = "0e774a9f-2022-40fc-b6ca-c117572e3c39",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
                             Id = "0ft3109e-3t4e-446f-46he-085116fr7450",
-                            ConcurrencyStamp = "c2f6c922-3fda-4ea3-b60d-64bee4a08047",
+                            ConcurrencyStamp = "de660668-b9aa-494a-b422-73127c1ded46",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "3j99004e-3b0e-446f-86af-073p96de6410",
-                            ConcurrencyStamp = "5558c87e-3948-4765-a592-f3ce7f2e2b48",
+                            ConcurrencyStamp = "6ffea312-205d-4630-a7d1-75134c565317",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -282,21 +284,6 @@ namespace SchoolBook_Structure.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("SchoolBook_Structure.Entities.StudentExam", b =>
-                {
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExamId", "StudentId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentsExams");
                 });
 
             modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
@@ -512,25 +499,6 @@ namespace SchoolBook_Structure.Migrations
                         .HasForeignKey("TeacherId");
 
                     b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("SchoolBook_Structure.Entities.StudentExam", b =>
-                {
-                    b.HasOne("SchoolBook_Structure.Entities.Exam", "Exam")
-                        .WithMany()
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SchoolBook_Structure.Entities.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("SchoolBook_Structure.Entities.Teacher", b =>
