@@ -17,6 +17,9 @@
                 <p class="mb-0">Фамилия: @student.LastName</p>
                 <p class="mb-0">Дата на раждане: @student.Birthday</p>
             </div>
+            <form class="input-group-sm" asp-route-examId="@student.ExamId" asp-route-stundentId="@student.StudentId" asp-controller="Exam" asp-action="Evaluate" method="post">
+                <input type="submit" value="Добави Оценка" class="fs-6 btn btn-success mb-3 p-2" />
+            </form>
         </div>
     }
 </div>

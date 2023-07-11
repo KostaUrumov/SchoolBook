@@ -81,11 +81,29 @@ namespace SchoolBook_Core.Services
                 {
                     FirstName = s.Student.FirstName,
                     LastName = s.Student.LastName,
-                    Birthday = s.Student.Birthday.ToShortDateString()
+                    Birthday = s.Student.Birthday.ToShortDateString(),
+                    StudentId = s.StudentId,
+                    ExamId= s.ExamId
+
                 })
                 .ToList();
              return students;
         }
+
+        public StudentExam FindSE(int examId, int studentId)
+        {
+            var result = data
+                .StudentsExams
+                .First(x => x.ExamId == examId && x.StudentId == studentId);
+
+            return result;
+        }
+
+        //public void AddScore(StudentExam score)
+        //{
+        //    var toChange = FindSE(score.ExamId, score.StudentId);
+           
+        //}
 
     }
 }

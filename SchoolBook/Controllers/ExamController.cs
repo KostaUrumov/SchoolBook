@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolBook_Core.Models.ExamModels;
 using SchoolBook_Core.Services;
+using SchoolBook_Structure.Entities;
 using System.Security.Claims;
 
 namespace SchoolBook.Controllers
@@ -42,6 +43,22 @@ namespace SchoolBook.Controllers
         {
             return View(eServ.CheckParticipants(examId));
         }
+
+        
+        public IActionResult Evaluate(int examId, int stundentId)
+        {
+            var findStudentExam = eServ.FindSE(examId, stundentId);  
+            
+            return View(findStudentExam);
+        }
+
+        
+        public IActionResult Evaluate(StudentExam example, int examId, int stundentId)
+        {
+            
+            return View();
+        }
+
 
     }
 }

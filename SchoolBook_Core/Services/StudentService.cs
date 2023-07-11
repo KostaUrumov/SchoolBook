@@ -39,7 +39,7 @@ namespace SchoolBook_Core.Services
                     FirstName = s.FirstName,
                     LastName = s.LastName,
                     Birthday = s.Birthday.Date.ToShortDateString(),
-                    Id = s.studentId
+                    StudentId = s.studentId
                 })
                 .ToList();
             return studs;

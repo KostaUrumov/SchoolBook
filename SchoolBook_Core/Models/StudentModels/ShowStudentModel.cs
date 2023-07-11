@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SchoolBook_Core.Models.StudentModels
+﻿namespace SchoolBook_Core.Models.StudentModels
 {
     public class ShowStudentModel
     {
@@ -11,8 +9,10 @@ namespace SchoolBook_Core.Models.StudentModels
 
         public string Birthday { get; set; } = null!;
 
-        public int Id { get; set; }
+        public int StudentId { get; set; }
         
         public int ExamId { get; set; }
+
+        public double Score { get; set; }
     }
 }

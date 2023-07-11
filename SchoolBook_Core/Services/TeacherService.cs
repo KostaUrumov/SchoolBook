@@ -115,7 +115,7 @@ namespace SchoolBook_Core.Services
                     FirstName = t.Student.FirstName,
                     LastName = t.Student.LastName,
                     Birthday = t.Student.Birthday.Date.ToShortDateString(),
-                    Id = t.StudentId
+                    StudentId = t.StudentId
 
                 })
                 .ToList();
@@ -167,7 +167,7 @@ namespace SchoolBook_Core.Services
                         LastName = student.LastName,
                         Birthday = student.Birthday.ToShortDateString(),
                         ExamId = exam.Id,
-                        Id = student.studentId
+                        StudentId = student.studentId
                     };
                     students.Add(studentModel);
                 }
