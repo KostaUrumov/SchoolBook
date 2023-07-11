@@ -83,7 +83,8 @@ namespace SchoolBook_Core.Services
                     LastName = s.Student.LastName,
                     Birthday = s.Student.Birthday.ToShortDateString(),
                     StudentId = s.StudentId,
-                    ExamId= s.ExamId
+                    ExamId= s.ExamId,
+                    Score = s.Score
 
                 })
                 .ToList();

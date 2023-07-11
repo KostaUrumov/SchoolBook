@@ -14,6 +14,6 @@ namespace SchoolBook_Structure.Entities
         [ForeignKey(nameof(ExamId))]
         public Exam Exam { get; set; } = null!;
 
-        public double? Score { get; set; }
+        public double Score { get; set; }
     }
 }
