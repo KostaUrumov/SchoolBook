@@ -99,11 +99,11 @@ namespace SchoolBook_Core.Services
             return result;
         }
 
-        //public void AddScore(StudentExam score)
-        //{
-        //    var toChange = FindSE(score.ExamId, score.StudentId);
-           
-        //}
+        public void SaveScore(StudentExam exam, double score)
+        {
+            exam.Score = score;
+            data.SaveChanges();
+        }
 
     }
 }

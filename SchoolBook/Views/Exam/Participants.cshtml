@@ -16,10 +16,18 @@
                 <p class="mb-0">Първо име: @student.FirstName</p>
                 <p class="mb-0">Фамилия: @student.LastName</p>
                 <p class="mb-0">Дата на раждане: @student.Birthday</p>
+                @if (student.Score > 0)
+                {
+                    <p class="mb-0">Оценка: @student.Score</p>
+                }
+                else
+                {
+                    <form class="input-group-sm" asp-route-examId="@student.ExamId" asp-route-studentId="@student.StudentId" asp-controller="Exam" asp-action="Evaluate" method="post">
+                        <input type="submit" value="Добави Оценка" class="fs-6 btn btn-success mb-3 p-2" />
+                    </form>
+                }
             </div>
-            <form class="input-group-sm" asp-route-examId="@student.ExamId" asp-route-stundentId="@student.StudentId" asp-controller="Exam" asp-action="Evaluate" method="post">
-                <input type="submit" value="Добави Оценка" class="fs-6 btn btn-success mb-3 p-2" />
-            </form>
+           
         </div>
     }
 </div>

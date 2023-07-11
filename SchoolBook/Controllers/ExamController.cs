@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using SchoolBook_Core.Models.ExamModels;
 using SchoolBook_Core.Services;
 using SchoolBook_Structure.Entities;
@@ -44,20 +45,24 @@ namespace SchoolBook.Controllers
             return View(eServ.CheckParticipants(examId));
         }
 
-        
-        public IActionResult Evaluate(int examId, int stundentId)
+      
+        public IActionResult Evaluate(int examId, int studentId, double score)
         {
-            var findStudentExam = eServ.FindSE(examId, stundentId);  
-            
-            return View(findStudentExam);
+            StudentExam find = eServ.FindSE(examId, studentId);
+            eServ.SaveScore(find,score);
+            if (score > 0)
+            {
+                return RedirectToAction(nameof(Participants));
+            }
+            return View (find);
         }
 
         
-        public IActionResult Evaluate(StudentExam example, int examId, int stundentId)
-        {
-            
-            return View();
-        }
+
+
+
+
+
 
 
     }
